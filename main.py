@@ -25,6 +25,42 @@ def get_type_info_r() -> dict:
       matchups[type_name] = type_info_request['damage_relations']
       
    return matchups
+
+# give the user information about certain types
+def run_type_directory(matchups):
+   
+   is_running = True
+
+   # press q to quit the game
+   while(is_running):
+      current_type = input('Which type do you want to learn about?\n').lower()
+      
+      # make sure to type accurately
+      if current_type == 'q':
+            break
+         
+      elif current_type not in list(matchups.keys()):
+            print('that type doesn\'t exist, try again...')
+            continue
+      
+      # get type relations about the current type
+      super_effective_against_type = [relation['name'] for relation in matchups[current_type]['double_damage_from']]  
+      half_effective_against_type = [relation['name'] for relation in matchups[current_type]['half_damage_from']]
+      not_effective_against_type = [relation['name'] for relation in matchups[current_type]['no_damage_from']]
+      
+      super_effective_to_type =  [relation['name'] for relation in matchups[current_type]['double_damage_to']]
+      half_effective_to_type = [relation['name'] for relation in matchups[current_type]['half_damage_to']]
+      not_effective_to_type = [relation['name'] for relation in matchups[current_type]['no_damage_to']]
+      
+      
+      print(f'\nyou chose: {current_type} \n' +
+            f'{current_type} is weak against {super_effective_against_type}\n' + 
+            f'{current_type} is strong against {half_effective_against_type}\n' +
+            f'{current_type} takes no damage against {not_effective_against_type}\n\n' +
+            f'{current_type} deals double damage against {super_effective_to_type}\n' +
+            f'{current_type} deals half damage against {half_effective_to_type}\n' + 
+            f'{current_type} deals no damage against {not_effective_to_type}\n')
+            
    
 
 # main game
@@ -55,32 +91,25 @@ def run_trainer(matchups):
 def main():
    
    matchups = get_type_info_r()
-
-   run_trainer(matchups=matchups)
       
+   app_running = True
+   
+   while(app_running):
+      
+      user_input = input('welcome to the poke type trainer. Please select 1 to run the trainer, 2 to get help, and anything else to quit... ')
+
+      match user_input:
+         case '1':
+            run_trainer(matchups=matchups)
+            
+         case '2':
+            run_type_directory(matchups=matchups)
+            
+         case _:
+            break
+      
+   
 
 if __name__ == '__main__':
    main()
 
-
-'''
-def run_type_directory(matchups):
-   
-   is_running = True
-
-   while(is_running):
-      user_input = input('Which type do you want to learn about?\n').lower()
-      
-      if user_input not in matchups.keys():
-            print('that type doesn\'t exist, try again...')
-            continue
-         
-      elif user_input == 'q':
-            break
-      
-      current_type = matchups[user_input]
-      current_answers = [relation['name'] for relation in matchups[current_type]['double_damage_from']]  
-      
-      print(f'\nyou chose: {current_type} \n' +
-            f'{current_type} is weak against {current_answers}\n')
-'''

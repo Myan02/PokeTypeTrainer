@@ -2,6 +2,9 @@ from requests import get
 
 # keeps track of game states for player
 class App:
+   # closed: App is not running, but the window can be open
+   # menu: App is running, user needs to choose what they want to do
+   # runner: App is running, user has chosen a runner
    states = {
       'closed' : 0,
       'menu'   : 1,
@@ -9,9 +12,13 @@ class App:
    }
    current_state = states['closed']
    
+   # local score and highscore to store for that user
    curr_score = 0
    max_score = 0
    
+   # combo multipliers, higher combo equals higher point multiplier
+   # key = number of questions right in a row
+   # value = combo multiplier
    combos = {
       0: 1.0,
       3: 1.1,
@@ -76,17 +83,26 @@ class App:
    def get_highscore(cls):
       return cls.max_score
 
-# Retrieve information about pokemon
+# retrieve information about pokemon
 class Pokemon:
    
-   # returns a list containing information about each type as a dict
-   types_r = get('https://pokeapi.co/api/v2/type').json()['results']
+   # retrieve a pokemon as a Pokemon object
+   def __init__(self):
+      pass
    
    @classmethod
    def get_type_info_r(cls) -> dict:
       
+      # returns a list containing information about each type as a dict
+      response = get('https://pokeapi.co/api/v2/type')
+      
+      if response.status_code == 200:
+         types_r = response.json()['results']
+      else:
+         raise Exception(f'pokemon types not retrieved properly, status code {response.status_code}')
+         
       matchups = {}
-      for entry in cls.types_r:
+      for entry in types_r:
          # name of the current type (ie. normal, fighting, rock, etc)
          type_name = entry['name']
          
@@ -95,7 +111,13 @@ class Pokemon:
             continue
       
          # get information about the current type
-         type_info_request = get(f'https://pokeapi.co/api/v2/type/{type_name}').json()
+         request = get(f'https://pokeapi.co/api/v2/type/{type_name}')
+         
+         if request.status_code == 200:
+            type_info_request = request.json()
+         else:
+            raise Exception(f'unable to retrieve type information for pokemon type {type_name}, status code {response.status_code}')
+         
          
          # populate a table with all damage relations to the current type, ie:
          '''

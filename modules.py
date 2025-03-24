@@ -1,16 +1,7 @@
 from requests import get
 
 # keeps track of game states for player
-class App:
-   # closed: App is not running, but the window can be open
-   # menu: App is running, user needs to choose what they want to do
-   # runner: App is running, user has chosen a runner
-   states = {
-      'closed' : 0,
-      'menu'   : 1,
-      'runner' : 2
-   }
-   current_state = states['closed']
+class Score:
    
    # local score and highscore to store for that user
    curr_score = 0
@@ -30,11 +21,6 @@ class App:
    current_combo_index = 0
    current_combo = combos[current_combo_index]
    
-   
-   # update the state when the player interacts with the menu
-   @classmethod
-   def change_state(cls, state):
-      cls.current_state = cls.states[state]
       
    # increase or decrease the score based on the current combo
    @classmethod
@@ -44,7 +30,21 @@ class App:
    # increase the combo multiplier once player has enough combo
    @classmethod
    def increase_combo(cls):
-      cls.current_combo = cls.combos[cls.current_combo_index]
+      cls.current_combo_index += 1
+      
+      match cls.current_combo_index:
+               case 3:
+                  cls.current_combo = cls.combos[cls.current_combo_index]
+               case 5:
+                  cls.current_combo = cls.combos[cls.current_combo_index]
+               case 7:
+                  cls.current_combo = cls.combos[cls.current_combo_index]
+               case 10:
+                  cls.current_combo = cls.combos[cls.current_combo_index]
+               case 15:
+                  cls.current_combo = cls.combos[cls.current_combo_index]
+               case _:
+                  pass
    
    # increment for every continous right answer
    @classmethod

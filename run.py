@@ -1,5 +1,5 @@
 from random import choice as pick_one, shuffle as shuffle_list
-from modules import App
+from modules import Score
 
 # give the user information about certain types
 def type_directory(matchups):
@@ -98,28 +98,14 @@ def trainer(matchups):
          # check if their answer is correct or not
          if user_choice in current_answers:
             # update the player's score and combo
-            App.update_score(10)
-            App.update_combo_index()
-            
-            match App.get_combo_index():
-               case 3:
-                  App.increase_combo()
-               case 5:
-                  App.increase_combo()
-               case 7:
-                  App.increase_combo()
-               case 10:
-                  App.increase_combo()
-               case 15:
-                  App.increase_combo()
-               case _:
-                  pass
+            Score.update_score(10)
+            Score.increase_combo()
             
             print('\nthat\'s correct! Next up:\n')
       
          else:
-            App.update_score(-10)
-            App.reset_combo()
+            Score.update_score(-10)
+            Score.reset_combo()
             
             print(f'\nsorry, that\'s incorrect. {current_type} is actually weak against {current_answers}\n')
             
@@ -137,33 +123,20 @@ def trainer(matchups):
          # as long as the user inputs one weakness correctly, they move on
          if user_choice in current_answers:
             # update the player's score and combo
-            App.update_score(10)
-            App.update_combo_index()
+            Score.update_score(10)
+            Score.increase_combo()
             
-            match App.get_combo_index():
-               case 3:
-                  App.increase_combo()
-               case 5:
-                  App.increase_combo()
-               case 7:
-                  App.increase_combo()
-               case 10:
-                  App.increase_combo()
-               case 15:
-                  App.increase_combo()
-               case _:
-                  pass
             
             print('\nthat\'s correct! Next up:\n')
          else:
-            App.update_score(-10)
-            App.reset_combo()
+            Score.update_score(-10)
+            Score.reset_combo()
             
             print(f'\nsorry, that\'s incorrect. {current_type} is actually weak against {current_answers}\n')
 
-   App.set_highscore()
-   print(f'good job! \nYour score was: {App.get_score()}\n' + 
-                   f'Your Highscore is: {App.get_highscore()}\n')
-   App.reset_score()
-   App.reset_combo()
+   Score.set_highscore()
+   print(f'good job! \nYour score was: {Score.get_score()}\n' + 
+                   f'Your Highscore is: {Score.get_highscore()}\n')
+   Score.reset_score()
+   Score.reset_combo()
 

@@ -1,4 +1,5 @@
 from requests import get
+import os
 
 # keeps track of game states for player
 class Score:
@@ -21,7 +22,14 @@ class Score:
    current_combo_index = 0
    current_combo = combos[current_combo_index]
    
-      
+   # if the highscore file doesnt exist, create it
+   @classmethod
+   def initialize_highscore(cls):
+      if os.path.exists('highscore.txt'):
+         cls.max_score = cls.retrieve_highscore_file()
+      else:
+         cls.update_highscore_file()
+   
    # increase or decrease the score based on the current combo
    @classmethod
    def update_score(cls, score):
@@ -77,11 +85,31 @@ class Score:
    def set_highscore(cls):
       if cls.curr_score > cls.max_score:
          cls.max_score = cls.curr_score
+         
+   # create and initialize a file to keep highscores
+   @classmethod
+   def update_highscore_file(cls):
+      try:
+         with open('./gui/highscore.txt', 'w') as file:
+            file.write(str(int(cls.get_highscore())))
+      except Exception as e:
+         print(f'unable to write to file, error {e}')
    
    # return the player's max score
    @classmethod
    def get_highscore(cls):
       return cls.max_score
+   
+   # retrieve highscore from file
+   @classmethod
+   def retrieve_highscore_file(cls):
+      try:
+         with open('./gui/highscore.txt', 'r') as file:
+            return int(file.read())
+      except Exception as e:
+         print(f'unable to read from file, error {e}')
+
+   
 
 # retrieve information about pokemon
 class Pokemon:
@@ -96,6 +124,7 @@ class Pokemon:
       # returns a list containing information about each type as a dict
       response = get('https://pokeapi.co/api/v2/type')
       
+      # check to make sure HTTP request went through properly
       if response.status_code == 200:
          types_r = response.json()['results']
       else:

@@ -1,2 +1,31 @@
+QWidget {
+    background-color: lightblue;
+}
 
+QLabel#score_label {
+    font-size: 25px;
+    margin: 5px 15px 0px 0px;
+    font-family: "Minecraftia";
+}
+
+QLabel#time_label {
+    font-size: 15px;
+    margin: 0px 18px 0px 0px;
+    font-family: "Minecraftia";
+}
+
+QPushButton {
+    padding: 5px 5px 0px 5px;
+    margin: 4px;
+    font-size: 16px;
+    font-family: "Minecraftia";
+    border: 2px solid;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: #3466AF;
+    color: white;
+}
 

@@ -8,7 +8,7 @@ from modules import Score, Pokemon
 
 from PyQt5.QtWidgets import QWidget, QMainWindow, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QGridLayout
 from PyQt5.QtCore import Qt, QCoreApplication, QTimer, pyqtSignal, QObject
-from PyQt5.QtGui import QFontDatabase
+from PyQt5.QtGui import QFontDatabase, QPixmap
 
 
 # abstract class, handles requests and some game logic related to requests
@@ -26,7 +26,7 @@ class Window(QMainWindow):
             with open(stylesheet, 'r') as file:
                 self.setStyleSheet(file.read())
         except Exception as e:
-            print('unable to load stylesheet, maybe it was deleted? error: {r}')
+            print(f'unable to load stylesheet \"{stylesheet}\", maybe it was deleted? error: {e}')
     
     '''
         get current question, correct answer, and wrong answers 
@@ -64,10 +64,11 @@ class Menu(Window):
         super().__init__()
         self.setWindowTitle('PokeTrainer')
         self.layoutWidget = QWidget()
-        self.font_id = QFontDatabase.addApplicationFont('./gui/fonts/Pokemon_Solid.ttf')  # load custom fonts
+        self.font_id = QFontDatabase.addApplicationFont('./gui/fonts/Minecraftia-Regular.ttf')  # load custom fonts
+        self.pokemon_logo = QPixmap('./gui/icons/International_Pokémon_logo.svg.png')
         
         # menu elements
-        self.title_label = QLabel(text='PokeTrainer')
+        self.title_label = QLabel()
         self.play_button = QPushButton(text='Play')
         self.help_button = QPushButton(text='Help')
         self.options_button = QPushButton(text='Options')
@@ -91,7 +92,7 @@ class Menu(Window):
         
         # all widgets lie under the vbox layout
         for widget in self.menu_elements:
-            vbox.addWidget(widget)
+            vbox.addWidget(widget, alignment=Qt.AlignCenter)
             
         # align widgets
         self.title_label.setAlignment(Qt.AlignCenter)
@@ -105,6 +106,19 @@ class Menu(Window):
         self.quit_button.setObjectName('quit_button')
         self.copyright_label.setObjectName('copyright_label')
         
+        # set size of the buttons
+        self.play_button.setMinimumWidth(150)
+        self.help_button.setMinimumWidth(150)
+        self.options_button.setMinimumWidth(150)
+        self.quit_button.setMinimumWidth(150)
+        
+        # set pokemon logo
+        self.title_label.setGeometry(0, 0, 341, 125)
+        self.scaled_pokemon_logo = self.pokemon_logo.scaled(self.title_label.size(), aspectRatioMode=1)
+        self.title_label.setPixmap(self.scaled_pokemon_logo)
+        self.title_label.setScaledContents(True)
+        
+ 
         # get css styling for this batch of widgets
         self.load_stylesheet('./gui/stylesheets/menu.qss')
         
@@ -128,6 +142,7 @@ class Trainer(Window, QObject):
         super().__init__()
         self.setWindowTitle('PokeTrainer')
         self.layoutWidget = QWidget()
+        self.font_id = QFontDatabase.addApplicationFont('./gui/fonts/Minecraftia-Regular.ttf')  # load custom fonts
         self.start_time = 0     # used for each question start time to calculate score
         self.end_time = 0       # used for each question start time to calculate score
         self.total_time = 60    # maximum time player has for all questions
@@ -174,6 +189,10 @@ class Trainer(Window, QObject):
         vbox.addWidget(self.time_label)
         vbox.addLayout(hbox)
         vbox.addLayout(gridbox)
+        
+        # set label sizing
+        self.score_label.setFixedHeight(40)
+        self.time_label.setFixedHeight(40)
             
         # align widgets
         self.score_label.setAlignment(Qt.AlignRight)

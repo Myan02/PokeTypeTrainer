@@ -25,7 +25,7 @@ class Score:
    # if the highscore file doesnt exist, create it
    @classmethod
    def initialize_highscore(cls):
-      if os.path.exists('highscore.txt'):
+      if os.path.exists('./gui/highscore.txt'):
          cls.max_score = cls.retrieve_highscore_file()
       else:
          cls.update_highscore_file()

@@ -1,10 +1,9 @@
-# 
+# starts the gui when ran
 import sys
 from gui.windows import Menu, Trainer, GameOver
 from gui import app, QStackedWidget
 
         
-
 def main():
     
     # instance windows

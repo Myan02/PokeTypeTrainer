@@ -1,7 +1,29 @@
-QLabel#title_label{
-    font-family: 'Pokemon Solid';
-    font-size: 64px;
-    color: #ffcc03;
+QWidget {
+    background-color: lightblue;
+}
+
+QLabel#title_label {
+    margin: 25px;
+}
+
+QLabel#copyright_label {
+    font-weight: bold;
+    font-family: "Minecraftia";
+}
+
+QPushButton {
+    padding: 5px 5px 0px 5px;
+    margin: 4px;
+    font-size: 16px;
+    font-family: "Minecraftia";
+    border: 2px solid;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: #3466AF;
+    color: white;
 }
 
 

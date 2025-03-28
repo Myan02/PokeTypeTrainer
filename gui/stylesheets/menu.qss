@@ -3,12 +3,13 @@ QWidget {
 }
 
 QLabel#title_label {
-    margin: 25px;
+    margin: 25px 25px 50px 25px;
 }
 
 QLabel#copyright_label {
     font-weight: bold;
     font-family: "Minecraftia";
+    margin: 5px 0px 0px 0px;
 }
 
 QPushButton {
@@ -19,6 +20,7 @@ QPushButton {
     border: 2px solid;
     border-radius: 15px;
     font-weight: bold;
+    background-color: white;
 }
 
 QPushButton:hover {

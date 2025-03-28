@@ -90,9 +90,20 @@ class Menu(Window):
         # create the vertical layout
         vbox = QVBoxLayout()
         
-        # all widgets lie under the vbox layout
-        for widget in self.menu_elements:
-            vbox.addWidget(widget, alignment=Qt.AlignCenter)
+        # sub layouts for the pushbutton options
+        hbox_top = QHBoxLayout()
+        hbox_bottom = QHBoxLayout()
+        
+        # all all widgets and layouts
+        hbox_top.addWidget(self.play_button)
+        hbox_top.addWidget(self.help_button)
+        hbox_bottom.addWidget(self.options_button)
+        hbox_bottom.addWidget(self.quit_button)
+        
+        vbox.addWidget(self.title_label)
+        vbox.addLayout(hbox_top)
+        vbox.addLayout(hbox_bottom)
+        vbox.addWidget(self.copyright_label)
             
         # align widgets
         self.title_label.setAlignment(Qt.AlignCenter)
@@ -146,6 +157,9 @@ class Trainer(Window, QObject):
         self.start_time = 0     # used for each question start time to calculate score
         self.end_time = 0       # used for each question start time to calculate score
         self.total_time = 60    # maximum time player has for all questions
+        self.first_type_icon = QPixmap()
+        self.second_type_icon = QPixmap()
+        
         
         # trainer elements
         self.score_label = QLabel(text='Score: ')
@@ -167,8 +181,10 @@ class Trainer(Window, QObject):
         # create the vertical layout
         vbox = QVBoxLayout()
         
+        
         # create child horizontal layout for question types
         hbox = QHBoxLayout()
+        
         
         # create grid layout for multiple choice locations
         gridbox = QGridLayout()
@@ -176,7 +192,6 @@ class Trainer(Window, QObject):
         # add horizontal widgets
         hbox.addWidget(self.first_type)
         hbox.addWidget(self.comparison_label)
-        hbox.addWidget(self.second_type)
 
         # add grid choices
         gridbox.addWidget(self.choices[0], 0, 0)
@@ -188,16 +203,20 @@ class Trainer(Window, QObject):
         vbox.addWidget(self.score_label)
         vbox.addWidget(self.time_label)
         vbox.addLayout(hbox)
+        vbox.addWidget(self.second_type)
         vbox.addLayout(gridbox)
         
         # set label sizing
         self.score_label.setFixedHeight(40)
         self.time_label.setFixedHeight(40)
+        self.second_type.setMinimumSize(50, 50)
+        self.second_type.setMaximumSize(50, 50)
             
         # align widgets
         self.score_label.setAlignment(Qt.AlignRight)
         self.time_label.setAlignment(Qt.AlignRight)
         hbox.setAlignment(Qt.AlignCenter)
+        self.second_type.setAlignment(Qt.AlignCenter)
         
         # object names
         self.score_label.setObjectName('score_label')
@@ -226,10 +245,14 @@ class Trainer(Window, QObject):
         # calculate how long it takes for the user to choose an answer
         self.start_time = time.time()
         
-        # set text for question labels
+        # set text and icons for question labels
         self.update_score_label()
         self.first_type.setText('?')
-        self.second_type.setText(self.current_type)
+        self.second_type.setGeometry(0, 0, 50, 50)
+        icon = QPixmap(f'./gui/icons/{self.current_type}.svg')
+        scaled_icon = icon.scaled(self.second_type.size(), aspectRatioMode=1)
+        self.second_type.setPixmap(scaled_icon)
+        self.second_type.setScaledContents(True)
         
         # debugging purposes (i suck at remembering types lmao)
         print(f'{self.current_answers}\n')

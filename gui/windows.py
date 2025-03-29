@@ -181,10 +181,8 @@ class Trainer(Window, QObject):
         # create the vertical layout
         vbox = QVBoxLayout()
         
-        
         # create child horizontal layout for question types
         hbox = QHBoxLayout()
-        
         
         # create grid layout for multiple choice locations
         gridbox = QGridLayout()
@@ -203,20 +201,21 @@ class Trainer(Window, QObject):
         vbox.addWidget(self.score_label)
         vbox.addWidget(self.time_label)
         vbox.addLayout(hbox)
-        vbox.addWidget(self.second_type)
+        vbox.addWidget(self.second_type, alignment=Qt.AlignHCenter | Qt.AlignVCenter)
         vbox.addLayout(gridbox)
         
         # set label sizing
         self.score_label.setFixedHeight(40)
         self.time_label.setFixedHeight(40)
-        self.second_type.setMinimumSize(50, 50)
-        self.second_type.setMaximumSize(50, 50)
+        self.second_type.setMinimumSize(75, 75)
+        self.second_type.setMaximumSize(75, 75)
             
         # align widgets
         self.score_label.setAlignment(Qt.AlignRight)
         self.time_label.setAlignment(Qt.AlignRight)
         hbox.setAlignment(Qt.AlignCenter)
         self.second_type.setAlignment(Qt.AlignCenter)
+        
         
         # object names
         self.score_label.setObjectName('score_label')
@@ -368,7 +367,7 @@ class GameOver(Window):
         
         # two layout containers, main layout is the vbox
         vbox = QVBoxLayout()
-        hbox = QVBoxLayout()
+        hbox = QHBoxLayout()
         
         # add horizontal child layout widgets
         hbox.addWidget(self.play_again_button)
@@ -391,6 +390,10 @@ class GameOver(Window):
         self.highscore_label.setObjectName('highscore_label')
         self.play_again_button.setObjectName('play_again_button')
         self.menu_button.setObjectName('menu_button')
+        
+        # set widget sizes
+        self.play_again_button.setFixedWidth(150)
+        self.menu_button.setFixedWidth(150)
          
         # load stylesheet
         self.load_stylesheet('./gui/stylesheets/game_over.qss') 

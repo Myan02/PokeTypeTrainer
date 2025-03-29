@@ -4,13 +4,11 @@ QWidget {
 
 QLabel#score_label {
     font-size: 25px;
-    margin: 5px 15px 0px 0px;
     font-family: "Minecraftia";
 }
 
 QLabel#time_label {
     font-size: 15px;
-    margin: 0px 18px 0px 0px;
     font-family: "Minecraftia";
 }
 
